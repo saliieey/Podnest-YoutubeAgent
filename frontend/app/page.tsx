@@ -3,7 +3,7 @@
 // Force dynamic rendering for this page since it uses searchParams
 export const dynamic = 'force-dynamic'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import TopicSection from './components/topic_section'
 import ScriptSection from './components/script_section'
 import AssetSection from './components/asset_section'
@@ -25,7 +25,7 @@ interface FormData {
 }
 
 
-export default function Home() {
+function HomeContent() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     topic: '',
@@ -81,9 +81,9 @@ export default function Home() {
   const router = useRouter()
   const searchParams = useSearchParams()
   // Safely get search params with fallbacks
-  const defaultTab = (searchParams?.get('tab') as 'new' | 'pending' | 'uploaded' | 'avatar') || 'new';
+  const defaultTab = (searchParams.get('tab') as 'new' | 'pending' | 'uploaded' | 'avatar') || 'new';
   const [activeTab, setActiveTab] = useState(defaultTab);
-  const highlightId = searchParams?.get('highlight') || null;
+  const highlightId = searchParams.get('highlight');
   const { isProcessing: globalProcessing, setIsProcessing: setGlobalProcessing, setMessage: setGlobalProcessingMessage, setProcessedTab } = useProcessing();
 
  
@@ -1260,3 +1260,14 @@ export default function Home() {
   );
 }
 
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="w-full min-h-screen px-2 sm:px-4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
+  );
+}
