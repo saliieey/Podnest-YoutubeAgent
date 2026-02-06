@@ -40,6 +40,13 @@ export default function PendingUploadsTab() {
   const { setIsProcessing, setMessage, setProcessedTab } = useProcessing();
 
   useEffect(() => {
+    // Skip API call if base URL is not configured (during build)
+    if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
+      setLoading(false);
+      setError('API base URL not configured');
+      return;
+    }
+    
     setLoading(true);
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pending-projects`)
       .then(res => {

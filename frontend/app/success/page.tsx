@@ -1,9 +1,12 @@
 'use client';
-import React from 'react';
+// Force dynamic rendering for this page since it uses searchParams
+export const dynamic = 'force-dynamic'
+
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const driveLink = searchParams.get('driveLink');
 
@@ -54,5 +57,17 @@ export default function SuccessPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 } 

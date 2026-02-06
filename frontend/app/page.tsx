@@ -1,5 +1,7 @@
 'use client'
 
+// Force dynamic rendering for this page since it uses searchParams
+export const dynamic = 'force-dynamic'
 
 import { useState, useRef, useEffect } from 'react'
 import TopicSection from './components/topic_section'
@@ -113,7 +115,7 @@ export default function Home() {
 
   // Add a utility function to create a direct download link for Google Drive files
   const getDirectDownloadUrl = (fileId: string) => {
-    if (!fileId) return null;
+    if (!fileId || !process.env.NEXT_PUBLIC_GOOGLE_DRIVE_DOWNLOAD_URL) return null;
     return `${process.env.NEXT_PUBLIC_GOOGLE_DRIVE_DOWNLOAD_URL}&id=${fileId}`;
   };
 
