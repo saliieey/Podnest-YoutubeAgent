@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { ProcessingProvider } from './components/ProcessingContext';
 import ProcessingToast from './components/ProcessingToast';
 import Image from 'next/image';
@@ -33,7 +33,9 @@ export default function RootLayout({
             />
           </header>
           <div style={{paddingTop: '72px'}}>{children}</div>
-          <ProcessingToast />
+          <Suspense fallback={null}>
+            <ProcessingToast />
+          </Suspense>
         </ProcessingProvider>
       </body>
     </html>

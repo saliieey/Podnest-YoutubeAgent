@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useProcessing } from './ProcessingContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -10,11 +10,11 @@ const tabLabels: Record<string, string> = {
   uploaded: 'Uploaded Videos',
 };
 
-const ProcessingToast = () => {
+const ProcessingToastContent = () => {
   const { isProcessing, message, processedTab, setProcessedTab } = useProcessing();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentTab = searchParams.get('tab') || 'new';
+  const currentTab = searchParams?.get('tab') || 'new';
 
   // Only show the toast if processedTab is set and user is NOT on the process tab
   const showToast = processedTab && processedTab !== currentTab;
@@ -159,6 +159,14 @@ const ProcessingToast = () => {
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="4" x2="16" y2="16"/><line x1="16" y1="4" x2="4" y2="16"/></svg>
       </button>
     </div>
+  );
+};
+
+const ProcessingToast = () => {
+  return (
+    <Suspense fallback={null}>
+      <ProcessingToastContent />
+    </Suspense>
   );
 };
 
