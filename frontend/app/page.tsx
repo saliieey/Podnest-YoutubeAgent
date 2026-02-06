@@ -80,9 +80,10 @@ export default function Home() {
   const [proxyAvatarJobId, setProxyAvatarJobId] = useState<string | null>(null);
   const router = useRouter()
   const searchParams = useSearchParams()
-  const defaultTab = searchParams.get('tab') as 'new' | 'pending' | 'uploaded' | 'avatar' || 'new';
+  // Safely get search params with fallbacks
+  const defaultTab = (searchParams?.get('tab') as 'new' | 'pending' | 'uploaded' | 'avatar') || 'new';
   const [activeTab, setActiveTab] = useState(defaultTab);
-  const highlightId = searchParams.get('highlight');
+  const highlightId = searchParams?.get('highlight') || null;
   const { isProcessing: globalProcessing, setIsProcessing: setGlobalProcessing, setMessage: setGlobalProcessingMessage, setProcessedTab } = useProcessing();
 
  

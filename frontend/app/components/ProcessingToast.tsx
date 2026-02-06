@@ -14,7 +14,7 @@ const ProcessingToastContent = () => {
   const { isProcessing, message, processedTab, setProcessedTab } = useProcessing();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentTab = searchParams?.get('tab') || 'new';
+  const currentTab = searchParams.get('tab') || 'new';
 
   // Only show the toast if processedTab is set and user is NOT on the process tab
   const showToast = processedTab && processedTab !== currentTab;
